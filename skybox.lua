@@ -30,7 +30,7 @@ local toggleButton = Instance.new("ImageButton", screenGui)
 toggleButton.Size = UDim2.new(0, 55, 0, 55)
 toggleButton.Position = UDim2.new(0, 50, 0, 100)
 toggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-toggleButton.Image = "rbxthumb://type=Asset&id=83459479787234&w=150&h=150"
+toggleButton.Image = "rbxthumb://type=Asset&id=125881407710056&w=150&h=150"
 Instance.new("UICorner", toggleButton).CornerRadius = UDim.new(1, 0)
 local toggleStroke = Instance.new("UIStroke", toggleButton)
 toggleStroke.Color = Color3.fromRGB(255, 255, 255)
@@ -57,7 +57,7 @@ end)
 
 -- 3. Khung Menu chính
 local mainFrame = Instance.new("Frame", screenGui)
-mainFrame.Size = UDim2.new(0, 310, 0, 350)
+mainFrame.Size = UDim2.new(0, 310, 0, 380)
 mainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
 mainFrame.BackgroundTransparency = 0.1
@@ -71,7 +71,7 @@ mainStroke.Thickness = 1.5
 local bgImage = Instance.new("ImageLabel", mainFrame)
 bgImage.Size = UDim2.new(1, 0, 1, 0)
 bgImage.BackgroundTransparency = 1
-bgImage.Image = "rbxthumb://type=Asset&id=83459479787234&w=150&h=150"
+bgImage.Image = "rbxthumb://type=Asset&id=135628407019123&w=150&h=150"
 bgImage.ImageTransparency = 0.65
 bgImage.ScaleType = Enum.ScaleType.Stretch
 
@@ -116,7 +116,7 @@ toggleButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
 end)
 
--- Thanh chuyển Tab (4 Tabs: MAIN, SKY, GFX, ZOOM)
+-- Thanh chuyển Tab (4 Tabs: MAIN, SKY, GFX, TELE/ZOOM)
 local tabMainBtn = Instance.new("TextButton", mainFrame)
 tabMainBtn.Size = UDim2.new(0, 71, 0, 30)
 tabMainBtn.Position = UDim2.new(0, 5, 0, 45)
@@ -152,7 +152,7 @@ tabZoomBtn.Size = UDim2.new(0, 71, 0, 30)
 tabZoomBtn.Position = UDim2.new(0, 233, 0, 45)
 tabZoomBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 tabZoomBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
-tabZoomBtn.Text = "ZOOM"
+tabZoomBtn.Text = "TELE/ZOOM"
 tabZoomBtn.TextSize = 9
 tabZoomBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", tabZoomBtn).CornerRadius = UDim.new(0, 6)
@@ -277,32 +277,43 @@ closeBtn.TextSize = 11
 closeBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 8)
 
--- ================= TAB SKY =================
+-- ================= TAB SKY (GALAXY XỊN SÒ) =================
 local sky1Btn = Instance.new("TextButton", skyContainer)
-sky1Btn.Size = UDim2.new(0, 260, 0, 35)
-sky1Btn.Position = UDim2.new(0.5, -130, 0, 15)
+sky1Btn.Size = UDim2.new(0, 260, 0, 30)
+sky1Btn.Position = UDim2.new(0.5, -130, 0, 8)
 sky1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 80)
 sky1Btn.BackgroundTransparency = 0.2
 sky1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-sky1Btn.Text = "🌙 STARRY NIGHT (ĐÊM SAO SÁNG)"
+sky1Btn.Text = "🌙 STARRY NIGHT"
 sky1Btn.TextSize = 11
 sky1Btn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", sky1Btn).CornerRadius = UDim.new(0, 8)
 
+local sky4Btn = Instance.new("TextButton", skyContainer)
+sky4Btn.Size = UDim2.new(0, 260, 0, 30)
+sky4Btn.Position = UDim2.new(0.5, -130, 0, 44)
+sky4Btn.BackgroundColor3 = Color3.fromRGB(120, 30, 160)
+sky4Btn.BackgroundTransparency = 0.2
+sky4Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+sky4Btn.Text = "🌌 GALAXY (NGÂN HÀ NEBULA)"
+sky4Btn.TextSize = 11
+sky4Btn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", sky4Btn).CornerRadius = UDim.new(0, 8)
+
 local sky2Btn = Instance.new("TextButton", skyContainer)
-sky2Btn.Size = UDim2.new(0, 260, 0, 35)
-sky2Btn.Position = UDim2.new(0.5, -130, 0, 60)
+sky2Btn.Size = UDim2.new(0, 260, 0, 30)
+sky2Btn.Position = UDim2.new(0.5, -130, 0, 80)
 sky2Btn.BackgroundColor3 = Color3.fromRGB(220, 110, 80)
 sky2Btn.BackgroundTransparency = 0.2
 sky2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-sky2Btn.Text = "🌅 ANIME SUNSET (HOÀNG HÔN ẤM ÁP)"
+sky2Btn.Text = "🌅 ANIME SUNSET"
 sky2Btn.TextSize = 11
 sky2Btn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", sky2Btn).CornerRadius = UDim.new(0, 8)
 
 local sky3Btn = Instance.new("TextButton", skyContainer)
-sky3Btn.Size = UDim2.new(0, 260, 0, 35)
-sky3Btn.Position = UDim2.new(0.5, -130, 0, 105)
+sky3Btn.Size = UDim2.new(0, 260, 0, 30)
+sky3Btn.Position = UDim2.new(0.5, -130, 0, 116)
 sky3Btn.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
 sky3Btn.BackgroundTransparency = 0.2
 sky3Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -407,39 +418,27 @@ end
 
 fixLagBtn.MouseButton1Click:Connect(applyNewFixLag)
 
--- ================= TAB ZOOM =================
-local zoomLabel = Instance.new("TextLabel", zoomContainer)
-zoomLabel.Size = UDim2.new(0, 260, 0, 25)
-zoomLabel.Position = UDim2.new(0.5, -130, 0, 15)
-zoomLabel.BackgroundTransparency = 1
-zoomLabel.Text = "Nhập khoảng cách Zoom Màn Hình:"
-zoomLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
-zoomLabel.TextSize = 12
-zoomLabel.Font = Enum.Font.GothamBold
-
+-- ================= TAB TELE / ZOOM =================
 local zoomInput = Instance.new("TextBox", zoomContainer)
-zoomInput.Size = UDim2.new(0, 260, 0, 35)
-zoomInput.Position = UDim2.new(0.5, -130, 0, 45)
+zoomInput.Size = UDim2.new(0, 260, 0, 30)
+zoomInput.Position = UDim2.new(0.5, -130, 0, 8)
 zoomInput.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 zoomInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-zoomInput.PlaceholderText = "Ví dụ: 400, 1000, 5000..."
+zoomInput.PlaceholderText = "Nhập zoom..."
 zoomInput.Text = tostring(player.CameraMaxZoomDistance)
-zoomInput.TextSize = 12
+zoomInput.TextSize = 11
 zoomInput.Font = Enum.Font.Gotham
-Instance.new("UICorner", zoomInput).CornerRadius = UDim.new(0, 8)
-local zoomInputStroke = Instance.new("UIStroke", zoomInput)
-zoomInputStroke.Color = Color3.fromRGB(100, 100, 150)
-zoomInputStroke.Thickness = 1.5
+Instance.new("UICorner", zoomInput).CornerRadius = UDim.new(0, 6)
 
 local applyZoomBtn = Instance.new("TextButton", zoomContainer)
-applyZoomBtn.Size = UDim2.new(0, 260, 0, 35)
-applyZoomBtn.Position = UDim2.new(0.5, -130, 0, 90)
+applyZoomBtn.Size = UDim2.new(0, 260, 0, 26)
+applyZoomBtn.Position = UDim2.new(0.5, -130, 0, 42)
 applyZoomBtn.BackgroundColor3 = Color3.fromRGB(50, 120, 220)
 applyZoomBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 applyZoomBtn.Text = "ÁP DỤNG ZOOM"
-applyZoomBtn.TextSize = 12
+applyZoomBtn.TextSize = 11
 applyZoomBtn.Font = Enum.Font.GothamBold
-Instance.new("UICorner", applyZoomBtn).CornerRadius = UDim.new(0, 8)
+Instance.new("UICorner", applyZoomBtn).CornerRadius = UDim.new(0, 6)
 
 applyZoomBtn.MouseButton1Click:Connect(function()
     local val = tonumber(zoomInput.Text)
@@ -451,13 +450,76 @@ applyZoomBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- ================= LOGIC SKY =================
+local updatePlayerBtn = Instance.new("TextButton", zoomContainer)
+updatePlayerBtn.Size = UDim2.new(0, 260, 0, 28)
+updatePlayerBtn.Position = UDim2.new(0.5, -130, 0, 75)
+updatePlayerBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 100)
+updatePlayerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+updatePlayerBtn.Text = "🔄 UPDATE DANH SÁCH PLAYER"
+updatePlayerBtn.TextSize = 11
+updatePlayerBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", updatePlayerBtn).CornerRadius = UDim.new(0, 6)
+
+local playerScroll = Instance.new("ScrollingFrame", zoomContainer)
+playerScroll.Size = UDim2.new(0, 260, 0, 175)
+playerScroll.Position = UDim2.new(0.5, -130, 0, 108)
+playerScroll.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+playerScroll.BackgroundTransparency = 0.5
+playerScroll.BorderSizePixel = 0
+playerScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+playerScroll.ScrollBarThickness = 4
+Instance.new("UICorner", playerScroll).CornerRadius = UDim.new(0, 6)
+
+local playerListLayout = Instance.new("UIListLayout", playerScroll)
+playerListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+playerListLayout.Padding = UDim.new(0, 4)
+
+local function refreshPlayerList()
+    for _, child in ipairs(playerScroll:GetChildren()) do
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+    end
+    
+    local count = 0
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= player then
+            count = count + 1
+            local pBtn = Instance.new("TextButton", playerScroll)
+            pBtn.Size = UDim2.new(1, 0, 0, 30)
+            pBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+            pBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            pBtn.Text = "  " .. p.Name .. " (@" .. p.DisplayName .. ")"
+            pBtn.TextSize = 11
+            pBtn.Font = Enum.Font.Gotham
+            pBtn.TextXAlignment = Enum.TextXAlignment.Left
+            Instance.new("UICorner", pBtn).CornerRadius = UDim.new(0, 6)
+            
+            pBtn.MouseButton1Click:Connect(function()
+                local targetChar = p.Character
+                local targetHrp = targetChar and targetChar:FindFirstChild("HumanoidRootPart")
+                local myChar = player.Character
+                local myHrp = myChar and myChar:FindFirstChild("HumanoidRootPart")
+                
+                if targetHrp and myHrp then
+                    myHrp.CFrame = targetHrp.CFrame + Vector3.new(0, 3, 0)
+                end
+            end)
+        end
+    end
+    playerScroll.CanvasSize = UDim2.new(0, 0, 0, count * 34)
+end
+
+updatePlayerBtn.MouseButton1Click:Connect(refreshPlayerList)
+refreshPlayerList()
+
+-- ================= LOGIC SKY (GALAXY NEBULA THẬT) =================
 local function applySky(skyType, isRespawn)
     currentSkyType = skyType
     
     if not isRespawn then
         for _, child in ipairs(Lighting:GetChildren()) do
-            if child:IsA("Sky") or child:IsA("Atmosphere") or child:IsA("SunRaysEffect") or child.Name == "AnimeSunsetCC" then 
+            if child:IsA("Sky") or child:IsA("Atmosphere") or child:IsA("SunRaysEffect") or child.Name == "GalaxyCC" or child.Name == "AnimeSunsetCC" then 
                 child:Destroy() 
             end
         end
@@ -474,11 +536,35 @@ local function applySky(skyType, isRespawn)
         Lighting.Ambient = Color3.fromRGB(65, 65, 105)
         Lighting.OutdoorAmbient = Color3.fromRGB(80, 80, 120)
         Lighting.FogEnd = 100000
+    elseif skyType == "galaxy" then
+        if not Lighting:FindFirstChild("CustomSky") then
+            local newSky = Instance.new("Sky", Lighting)
+            newSky.Name = "CustomSky"
+            -- Texture Nebula/Galaxy nhiều màu sắc rực rỡ chuẩn vũ trụ
+            newSky.SkyboxBk = "rbxassetid://167139163"
+            newSky.SkyboxDn = "rbxassetid://167139178"
+            newSky.SkyboxFt = "rbxassetid://167139195"
+            newSky.SkyboxLf = "rbxassetid://167139207"
+            newSky.SkyboxRt = "rbxassetid://167139224"
+            newSky.SkyboxUp = "rbxassetid://167139243"
+            newSky.StarCount = 6000
+        end
+        Lighting.ClockTime = 0
+        Lighting.Brightness = 2.8
+        Lighting.Ambient = Color3.fromRGB(140, 70, 190)
+        Lighting.OutdoorAmbient = Color3.fromRGB(160, 90, 220)
+        Lighting.FogEnd = 100000
+        
+        local cc = Lighting:FindFirstChild("GalaxyCC") or Instance.new("ColorCorrectionEffect", Lighting)
+        cc.Name = "GalaxyCC"
+        cc.TintColor = Color3.fromRGB(245, 210, 255)
+        cc.Saturation = 0.6
+        cc.Contrast = 0.25
     elseif skyType == "animesunset" then
         if not Lighting:FindFirstChild("CustomSky") then
             local newSky = Instance.new("Sky", Lighting)
             newSky.Name = "CustomSky"
-            newSky.SkyboxBk = "rbxassetid://600832775"
+            newSky.SkyboxBk = "rbxassetid://600830600"
             newSky.SkyboxDn = "rbxassetid://600831331"
             newSky.SkyboxFt = "rbxassetid://600832039"
             newSky.SkyboxLf = "rbxassetid://600832775"
@@ -490,12 +576,10 @@ local function applySky(skyType, isRespawn)
         Lighting.ClockTime = 17.8
         Lighting.GeographicLatitude = 40
         Lighting.Brightness = 2.2
-        
         Lighting.Ambient = Color3.fromRGB(135, 115, 110)
         Lighting.OutdoorAmbient = Color3.fromRGB(180, 140, 120)
         Lighting.ColorShift_Top = Color3.fromRGB(255, 205, 150)
         Lighting.ColorShift_Bottom = Color3.fromRGB(140, 95, 110)
-        
         Lighting.FogEnd = 100000
         
         local cc = Lighting:FindFirstChild("AnimeSunsetCC") or Instance.new("ColorCorrectionEffect", Lighting)
@@ -505,6 +589,7 @@ local function applySky(skyType, isRespawn)
         cc.Contrast = 0.05
     else
         if Lighting:FindFirstChild("AnimeSunsetCC") then Lighting.AnimeSunsetCC:Destroy() end
+        if Lighting:FindFirstChild("GalaxyCC") then Lighting.GalaxyCC:Destroy() end
         Lighting.FogEnd = 100000
         Lighting.ClockTime, Lighting.Brightness, Lighting.Ambient, Lighting.OutdoorAmbient = 14, 2, Color3.fromRGB(128, 128, 128), Color3.fromRGB(128, 128, 128)
         Lighting.ColorShift_Top, Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0), Color3.fromRGB(0, 0, 0)
@@ -512,10 +597,11 @@ local function applySky(skyType, isRespawn)
 end
 
 sky1Btn.MouseButton1Click:Connect(function() applySky("starrynight", false) end)
+sky4Btn.MouseButton1Click:Connect(function() applySky("galaxy", false) end)
 sky2Btn.MouseButton1Click:Connect(function() applySky("animesunset", false) end)
 sky3Btn.MouseButton1Click:Connect(function() applySky("default", false) end)
 
--- ================= LOGIC FLY (PHÍM R, TỐI ĐA 5000, BƯỚC 100) =================
+-- ================= LOGIC FLY (PHÍM R) =================
 local keys = {W = false, A = false, S = false, D = false, Space = false, Shift = false}
 
 local function applyFlyPhysics()
@@ -603,7 +689,7 @@ mouse.Button1Down:Connect(function()
     end
 end)
 
--- ================= LOGIC ESP 2D + MÁU + ÔM SÁT PLAYER =================
+-- ================= LOGIC ESP 2D + MÁU =================
 local function createEsp(plr)
     if espBoxes[plr] then return end
     
