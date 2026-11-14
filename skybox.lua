@@ -8,10 +8,11 @@ local Workspace = game:GetService("Workspace")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local camera = workspace.CurrentCamera
+local mouse = player:GetMouse()
 
 local isFlying = false
 local isEspEnabled = false
-local flySpeed = 50
+local flySpeed = 100
 local flyConn = nil
 local currentSkyType = "default"
 
@@ -24,7 +25,7 @@ screenGui.ResetOnSpawn = false
 screenGui.IgnoreGuiInset = true
 screenGui.Parent = (CoreGui:FindFirstChild("RobloxGui") and CoreGui) or playerGui
 
--- 2. Nút mở/đóng Menu HÌNH TRÒN (Avatar ID)
+-- 2. Nút mở/đóng Menu HÌNH TRÒN (Avatar ID) - Có thể kéo thả
 local toggleButton = Instance.new("ImageButton", screenGui)
 toggleButton.Size = UDim2.new(0, 55, 0, 55)
 toggleButton.Position = UDim2.new(0, 50, 0, 100)
@@ -34,6 +35,25 @@ Instance.new("UICorner", toggleButton).CornerRadius = UDim.new(1, 0)
 local toggleStroke = Instance.new("UIStroke", toggleButton)
 toggleStroke.Color = Color3.fromRGB(255, 255, 255)
 toggleStroke.Thickness = 2
+
+local tDragging, tDragStart, tStartPos
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        tDragging = true
+        tDragStart = input.Position
+        tStartPos = toggleButton.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then tDragging = false end
+        end)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and tDragging then
+        local delta = input.Position - tDragStart
+        toggleButton.Position = UDim2.new(tStartPos.X.Scale, tStartPos.X.Offset + delta.X, tStartPos.Y.Scale, tStartPos.Y.Offset + delta.Y)
+    end
+end)
 
 -- 3. Khung Menu chính
 local mainFrame = Instance.new("Frame", screenGui)
@@ -59,14 +79,14 @@ local titleBar = Instance.new("TextButton", mainFrame)
 titleBar.Size = UDim2.new(1, 0, 0, 40)
 titleBar.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
 titleBar.BackgroundTransparency = 0.4
-titleBar.Text = "   AVATAR MULTI-TOOL MENU"
+titleBar.Text = "    AVATAR MULTI-TOOL MENU"
 titleBar.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleBar.TextSize = 13
 titleBar.Font = Enum.Font.GothamBold
 titleBar.TextXAlignment = Enum.TextXAlignment.Left
 Instance.new("UICorner", titleBar).CornerRadius = UDim.new(0, 14)
 
--- Kéo thả Menu
+-- Kéo thả Menu chính
 local dragging, dragInput, dragStart, startPos
 titleBar.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -96,36 +116,46 @@ toggleButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
 end)
 
--- Thanh chuyển Tab
+-- Thanh chuyển Tab (4 Tabs: MAIN, SKY, GFX, ZOOM)
 local tabMainBtn = Instance.new("TextButton", mainFrame)
-tabMainBtn.Size = UDim2.new(0, 96, 0, 30)
+tabMainBtn.Size = UDim2.new(0, 71, 0, 30)
 tabMainBtn.Position = UDim2.new(0, 5, 0, 45)
 tabMainBtn.BackgroundColor3 = Color3.fromRGB(50, 120, 220)
 tabMainBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 tabMainBtn.Text = "MAIN"
-tabMainBtn.TextSize = 10
+tabMainBtn.TextSize = 9
 tabMainBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", tabMainBtn).CornerRadius = UDim.new(0, 6)
 
 local tabSkyBtn = Instance.new("TextButton", mainFrame)
-tabSkyBtn.Size = UDim2.new(0, 96, 0, 30)
-tabSkyBtn.Position = UDim2.new(0, 105, 0, 45)
+tabSkyBtn.Size = UDim2.new(0, 71, 0, 30)
+tabSkyBtn.Position = UDim2.new(0, 81, 0, 45)
 tabSkyBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 tabSkyBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 tabSkyBtn.Text = "SKY"
-tabSkyBtn.TextSize = 10
+tabSkyBtn.TextSize = 9
 tabSkyBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", tabSkyBtn).CornerRadius = UDim.new(0, 6)
 
 local tabGfxBtn = Instance.new("TextButton", mainFrame)
-tabGfxBtn.Size = UDim2.new(0, 96, 0, 30)
-tabGfxBtn.Position = UDim2.new(0, 205, 0, 45)
+tabGfxBtn.Size = UDim2.new(0, 71, 0, 30)
+tabGfxBtn.Position = UDim2.new(0, 157, 0, 45)
 tabGfxBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 tabGfxBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 tabGfxBtn.Text = "GRAPHICS"
-tabGfxBtn.TextSize = 10
+tabGfxBtn.TextSize = 9
 tabGfxBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", tabGfxBtn).CornerRadius = UDim.new(0, 6)
+
+local tabZoomBtn = Instance.new("TextButton", mainFrame)
+tabZoomBtn.Size = UDim2.new(0, 71, 0, 30)
+tabZoomBtn.Position = UDim2.new(0, 233, 0, 45)
+tabZoomBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+tabZoomBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+tabZoomBtn.Text = "ZOOM"
+tabZoomBtn.TextSize = 9
+tabZoomBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", tabZoomBtn).CornerRadius = UDim.new(0, 6)
 
 local mainContainer = Instance.new("Frame", mainFrame)
 mainContainer.Size = UDim2.new(1, 0, 1, -80)
@@ -144,25 +174,42 @@ gfxContainer.Position = UDim2.new(0, 0, 0, 80)
 gfxContainer.BackgroundTransparency = 1
 gfxContainer.Visible = false
 
+local zoomContainer = Instance.new("Frame", mainFrame)
+zoomContainer.Size = UDim2.new(1, 0, 1, -80)
+zoomContainer.Position = UDim2.new(0, 0, 0, 80)
+zoomContainer.BackgroundTransparency = 1
+zoomContainer.Visible = false
+
 tabMainBtn.MouseButton1Click:Connect(function()
-    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible = true, false, false
+    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible, zoomContainer.Visible = true, false, false, false
     tabMainBtn.BackgroundColor3, tabMainBtn.TextColor3 = Color3.fromRGB(50, 120, 220), Color3.fromRGB(255, 255, 255)
     tabSkyBtn.BackgroundColor3, tabSkyBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
     tabGfxBtn.BackgroundColor3, tabGfxBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
+    tabZoomBtn.BackgroundColor3, tabZoomBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
 end)
 
 tabSkyBtn.MouseButton1Click:Connect(function()
-    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible = false, true, false
+    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible, zoomContainer.Visible = false, true, false, false
     tabMainBtn.BackgroundColor3, tabMainBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
     tabSkyBtn.BackgroundColor3, tabSkyBtn.TextColor3 = Color3.fromRGB(50, 120, 220), Color3.fromRGB(255, 255, 255)
     tabGfxBtn.BackgroundColor3, tabGfxBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
+    tabZoomBtn.BackgroundColor3, tabZoomBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
 end)
 
 tabGfxBtn.MouseButton1Click:Connect(function()
-    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible = false, false, true
+    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible, zoomContainer.Visible = false, false, true, false
     tabMainBtn.BackgroundColor3, tabMainBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
     tabSkyBtn.BackgroundColor3, tabSkyBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
     tabGfxBtn.BackgroundColor3, tabGfxBtn.TextColor3 = Color3.fromRGB(50, 120, 220), Color3.fromRGB(255, 255, 255)
+    tabZoomBtn.BackgroundColor3, tabZoomBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
+end)
+
+tabZoomBtn.MouseButton1Click:Connect(function()
+    mainContainer.Visible, skyContainer.Visible, gfxContainer.Visible, zoomContainer.Visible = false, false, false, true
+    tabMainBtn.BackgroundColor3, tabMainBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
+    tabSkyBtn.BackgroundColor3, tabSkyBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
+    tabGfxBtn.BackgroundColor3, tabGfxBtn.TextColor3 = Color3.fromRGB(40, 40, 50), Color3.fromRGB(200, 200, 200)
+    tabZoomBtn.BackgroundColor3, tabZoomBtn.TextColor3 = Color3.fromRGB(50, 120, 220), Color3.fromRGB(255, 255, 255)
 end)
 
 -- ================= TAB MAIN =================
@@ -172,7 +219,7 @@ flyBtn.Position = UDim2.new(0.5, -130, 0, 5)
 flyBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
 flyBtn.BackgroundTransparency = 0.2
 flyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-flyBtn.Text = "FLY (PHÍM T): TẮT"
+flyBtn.Text = "FLY (PHÍM R): TẮT"
 flyBtn.TextSize = 12
 flyBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", flyBtn).CornerRadius = UDim.new(0, 8)
@@ -203,7 +250,7 @@ subBtn.Position = UDim2.new(0.5, -130, 0, 105)
 subBtn.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
 subBtn.BackgroundTransparency = 0.2
 subBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-subBtn.Text = "GIẢM (-50)"
+subBtn.Text = "GIẢM (-100)"
 subBtn.TextSize = 11
 subBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", subBtn).CornerRadius = UDim.new(0, 6)
@@ -214,7 +261,7 @@ addBtn.Position = UDim2.new(0.5, 8, 0, 105)
 addBtn.BackgroundColor3 = Color3.fromRGB(50, 160, 80)
 addBtn.BackgroundTransparency = 0.2
 addBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-addBtn.Text = "TĂNG (+50)"
+addBtn.Text = "TĂNG (+100)"
 addBtn.TextSize = 11
 addBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", addBtn).CornerRadius = UDim.new(0, 6)
@@ -360,6 +407,50 @@ end
 
 fixLagBtn.MouseButton1Click:Connect(applyNewFixLag)
 
+-- ================= TAB ZOOM =================
+local zoomLabel = Instance.new("TextLabel", zoomContainer)
+zoomLabel.Size = UDim2.new(0, 260, 0, 25)
+zoomLabel.Position = UDim2.new(0.5, -130, 0, 15)
+zoomLabel.BackgroundTransparency = 1
+zoomLabel.Text = "Nhập khoảng cách Zoom Màn Hình:"
+zoomLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+zoomLabel.TextSize = 12
+zoomLabel.Font = Enum.Font.GothamBold
+
+local zoomInput = Instance.new("TextBox", zoomContainer)
+zoomInput.Size = UDim2.new(0, 260, 0, 35)
+zoomInput.Position = UDim2.new(0.5, -130, 0, 45)
+zoomInput.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+zoomInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+zoomInput.PlaceholderText = "Ví dụ: 400, 1000, 5000..."
+zoomInput.Text = tostring(player.CameraMaxZoomDistance)
+zoomInput.TextSize = 12
+zoomInput.Font = Enum.Font.Gotham
+Instance.new("UICorner", zoomInput).CornerRadius = UDim.new(0, 8)
+local zoomInputStroke = Instance.new("UIStroke", zoomInput)
+zoomInputStroke.Color = Color3.fromRGB(100, 100, 150)
+zoomInputStroke.Thickness = 1.5
+
+local applyZoomBtn = Instance.new("TextButton", zoomContainer)
+applyZoomBtn.Size = UDim2.new(0, 260, 0, 35)
+applyZoomBtn.Position = UDim2.new(0.5, -130, 0, 90)
+applyZoomBtn.BackgroundColor3 = Color3.fromRGB(50, 120, 220)
+applyZoomBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+applyZoomBtn.Text = "ÁP DỤNG ZOOM"
+applyZoomBtn.TextSize = 12
+applyZoomBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", applyZoomBtn).CornerRadius = UDim.new(0, 8)
+
+applyZoomBtn.MouseButton1Click:Connect(function()
+    local val = tonumber(zoomInput.Text)
+    if val then
+        player.CameraMaxZoomDistance = val
+        applyZoomBtn.Text = "ĐÃ ÁP DỤNG (" .. val .. "m)!"
+        task.wait(1)
+        applyZoomBtn.Text = "ÁP DỤNG ZOOM"
+    end
+end)
+
 -- ================= LOGIC SKY =================
 local function applySky(skyType, isRespawn)
     currentSkyType = skyType
@@ -387,7 +478,7 @@ local function applySky(skyType, isRespawn)
         if not Lighting:FindFirstChild("CustomSky") then
             local newSky = Instance.new("Sky", Lighting)
             newSky.Name = "CustomSky"
-            newSky.SkyboxBk = "rbxassetid://600830600"
+            newSky.SkyboxBk = "rbxassetid://600832775"
             newSky.SkyboxDn = "rbxassetid://600831331"
             newSky.SkyboxFt = "rbxassetid://600832039"
             newSky.SkyboxLf = "rbxassetid://600832775"
@@ -424,7 +515,7 @@ sky1Btn.MouseButton1Click:Connect(function() applySky("starrynight", false) end)
 sky2Btn.MouseButton1Click:Connect(function() applySky("animesunset", false) end)
 sky3Btn.MouseButton1Click:Connect(function() applySky("default", false) end)
 
--- ================= LOGIC FLY (ĐÃ BỎ NOCLIP) =================
+-- ================= LOGIC FLY (PHÍM R, TỐI ĐA 5000, BƯỚC 100) =================
 local keys = {W = false, A = false, S = false, D = false, Space = false, Shift = false}
 
 local function applyFlyPhysics()
@@ -438,7 +529,7 @@ local function applyFlyPhysics()
     if hrp:FindFirstChild("CustomFlyAlign") then hrp.CustomFlyAlign:Destroy() end
     if hrp:FindFirstChild("CustomFlyVelocity") then hrp.CustomFlyVelocity:Destroy() end
 
-    flyBtn.Text = "FLY (PHÍM T): BẬT"
+    flyBtn.Text = "FLY (PHÍM R): BẬT"
     flyBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
 
     local att = Instance.new("Attachment", hrp)
@@ -478,7 +569,7 @@ local function applyFlyPhysics()
 end
 
 local function removeFlyPhysics()
-    flyBtn.Text = "FLY (PHÍM T): TẮT"
+    flyBtn.Text = "FLY (PHÍM R): TẮT"
     flyBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
     if flyConn then flyConn:Disconnect() end
     
@@ -501,7 +592,18 @@ end
 
 flyBtn.MouseButton1Click:Connect(toggleFly)
 
--- ================= LOGIC ESP 2D + MÁU + SỐ MÉT (DƯỚI CHÂN) =================
+-- ================= LOGIC CTRL + CLICK TELEPORT =================
+mouse.Button1Down:Connect(function()
+    if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) or UserInputService:IsKeyDown(Enum.KeyCode.RightControl) then
+        local char = player.Character
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        if hrp and mouse.Target then
+            hrp.CFrame = CFrame.new(mouse.Hit.Position + Vector3.new(0, 3, 0))
+        end
+    end
+end)
+
+-- ================= LOGIC ESP 2D + MÁU + ÔM SÁT PLAYER =================
 local function createEsp(plr)
     if espBoxes[plr] then return end
     
@@ -547,6 +649,9 @@ local function toggleEsp()
         
         if espConn then espConn:Disconnect() end
         espConn = RunService.RenderStepped:Connect(function()
+            local myChar = player.Character
+            local myHrp = myChar and myChar:FindFirstChild("HumanoidRootPart")
+
             for _, p in ipairs(Players:GetPlayers()) do
                 if p ~= player then
                     local box, nameText, healthBg, healthBar, distText = espBoxes[p], espNames[p], espHealthBg[p], espHealthBars[p], espDistances[p]
@@ -556,21 +661,46 @@ local function toggleEsp()
                     
                     if box and nameText and healthBg and healthBar and distText then
                         if char and hrp and hum and hum.Health > 0 then
-                            local vector, onScreen = camera:WorldToViewportPoint(hrp.Position)
+                            local cf, size = char:GetBoundingBox()
+                            local halfX, halfY, halfZ = size.X / 2, size.Y / 2, size.Z / 2
+                            local corners = {
+                                cf * Vector3.new(halfX, halfY, halfZ),
+                                cf * Vector3.new(-halfX, halfY, halfZ),
+                                cf * Vector3.new(halfX, -halfY, halfZ),
+                                cf * Vector3.new(-halfX, -halfY, halfZ),
+                                cf * Vector3.new(halfX, halfY, -halfZ),
+                                cf * Vector3.new(-halfX, halfY, -halfZ),
+                                cf * Vector3.new(halfX, -halfY, -halfZ),
+                                cf * Vector3.new(-halfX, -halfY, -halfZ),
+                            }
+                            
+                            local minX, minY = math.huge, math.huge
+                            local maxX, maxY = -math.huge, -math.huge
+                            local onScreen = false
+                            
+                            for _, pos in ipairs(corners) do
+                                local screenPos, visible = camera:WorldToViewportPoint(pos)
+                                if visible then onScreen = true end
+                                minX = math.min(minX, screenPos.X)
+                                minY = math.min(minY, screenPos.Y)
+                                maxX = math.max(maxX, screenPos.X)
+                                maxY = math.max(maxY, screenPos.Y)
+                            end
+                            
                             if onScreen then
-                                local dist = (camera.CFrame.Position - hrp.Position).Magnitude
-                                local sizeX, sizeY = math.clamp(2000 / dist, 15, 300), math.clamp(3500 / dist, 20, 400)
-                                local posX, posY = vector.X - sizeX / 2, vector.Y - sizeY / 2
-
-                                box.Size, box.Position, box.Visible = Vector2.new(sizeX, sizeY), Vector2.new(posX, posY), true
-                                nameText.Position, nameText.Text, nameText.Visible = Vector2.new(vector.X, posY - 18), p.Name, true
+                                local width = maxX - minX
+                                local height = maxY - minY
+                                
+                                box.Size, box.Position, box.Visible = Vector2.new(width, height), Vector2.new(minX, minY), true
+                                nameText.Position, nameText.Text, nameText.Visible = Vector2.new(minX + width / 2, minY - 18), p.Name, true
 
                                 local healthPercent = math.clamp(hum.Health / hum.MaxHealth, 0, 1)
-                                healthBg.Size, healthBg.Position, healthBg.Visible = Vector2.new(4, sizeY + 2), Vector2.new(posX - 7, posY - 1), true
-                                healthBar.Size, healthBar.Position = Vector2.new(2, sizeY * healthPercent), Vector2.new(posX - 6, posY + (sizeY * (1 - healthPercent)))
+                                healthBg.Size, healthBg.Position, healthBg.Visible = Vector2.new(4, height + 2), Vector2.new(minX - 7, minY - 1), true
+                                healthBar.Size, healthBar.Position = Vector2.new(2, height * healthPercent), Vector2.new(minX - 6, minY + (height * (1 - healthPercent)))
                                 healthBar.Color, healthBar.Visible = Color3.fromRGB(255 * (1 - healthPercent), 255 * healthPercent, 0), true
 
-                                distText.Position = Vector2.new(vector.X, posY + sizeY + 4)
+                                local dist = myHrp and (myHrp.Position - hrp.Position).Magnitude or (camera.CFrame.Position - hrp.Position).Magnitude
+                                distText.Position = Vector2.new(minX + width / 2, minY + height + 4)
                                 distText.Text = math.floor(dist) .. "m"
                                 distText.Visible = true
                             else
@@ -608,17 +738,17 @@ player.CharacterAdded:Connect(function(newChar)
 end)
 
 addBtn.MouseButton1Click:Connect(function()
-    if flySpeed < 300 then flySpeed = math.min(300, flySpeed + 50) statusLabel.Text = "Tốc độ Fly: " .. flySpeed end
+    if flySpeed < 5000 then flySpeed = math.min(5000, flySpeed + 100) statusLabel.Text = "Tốc độ Fly: " .. flySpeed end
 end)
 
 subBtn.MouseButton1Click:Connect(function()
-    if flySpeed > 50 then flySpeed = math.max(50, flySpeed - 50) statusLabel.Text = "Tốc độ Fly: " .. flySpeed end
+    if flySpeed > 100 then flySpeed = math.max(100, flySpeed - 100) statusLabel.Text = "Tốc độ Fly: " .. flySpeed end
 end)
 
 closeBtn.MouseButton1Click:Connect(function() mainFrame.Visible = false end)
 
 UserInputService.InputBegan:Connect(function(input, gp)
-    if input.KeyCode == Enum.KeyCode.T and not gp then toggleFly() return end
+    if input.KeyCode == Enum.KeyCode.R and not gp then toggleFly() return end
     if gp then return end
     if input.KeyCode == Enum.KeyCode.W then keys.W = true end
     if input.KeyCode == Enum.KeyCode.S then keys.S = true end
